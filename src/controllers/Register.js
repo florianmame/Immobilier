@@ -33,7 +33,7 @@ module.exports = class Register {
             } else {
                 // sinon on tente de le créer
                 repo.add(entity).then((user) => {
-                     req.flash('notify', 'Votre compte a bien été créé.');
+                     request.flash('notify', 'Votre compte a bien été créé.');
                      //redirection quand l’utilisateur est créé
                      response.redirect('/');
                 }, (err) => {
