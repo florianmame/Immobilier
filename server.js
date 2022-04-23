@@ -42,7 +42,18 @@ app.use(session({
 //--------------------------------------------------------------------
 const flash = require('express-flash-messages');
 app.use(flash());
-
+if(process.env.APP_ENV === 'dev') {
+    app.use((req,res,next) => {
+        req.session.user = {
+            email:"mogangoflorian@gmail.com",
+            civility: '1',
+            firstname: 'florian',
+            lastname: 'mogango',
+            phone: '0628603174'
+        };
+        next();
+    });
+}
 
 //--------------------------------------------------------------------
 //      Envoie de variable(s) à PUG
