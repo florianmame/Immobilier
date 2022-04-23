@@ -2,3 +2,4 @@ node_modules/
 .env
 .env.test
 .browser-refresh-ignore
+public/images/realties/

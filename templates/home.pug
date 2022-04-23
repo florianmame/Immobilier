@@ -3,4 +3,35 @@ extends layout.pug
 block content
     p Hello world
     
-     
+     .row
+        each realty in realties         
+            .col-sm-4.mt-4
+                .card
+                    if realty.pictures && realty.pictures[0]
+                        img.card-img-top(src=realty.pictures[0], alt="no photo")
+                    else
+                        img.card-img-top(src="/images/no-photo.jpg", alt="no photo")
+                    .card-body
+                        h5.card-title
+                            - var rooms = ''
+                            - var area = ''
+                            if realty.room > 0
+                                - var rooms = ' - '+ realty.room + ' pièce(s)'
+                            if realty.area > 0
+                                - var area =  realty.area + 'm²'  
+
+                            if realty.type == 1 
+                                span Maison #{area} #{rooms}
+                            else if realty.type == 2
+                                span Appartement  #{area} #{rooms}
+                            else if realty.type == 3
+                                span Terrain  #{area}
+                            else if realty.type == 4
+                                span Parking
+                            else if realty.type == 5
+                                span Local / Bureau
+                            else 
+                                span Autre
+
+                        p.card-text #{realty.address.zipcode} #{realty.address.city}
+                        a.btn.btn-primary(href='/realty/'+realty.id) En savoir plus

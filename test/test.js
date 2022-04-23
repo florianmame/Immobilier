@@ -1,4 +1,4 @@
-require('dotenv').config({ path: `.env.test` });
+require('dotenv').config({ path: `test.env` });
 const assert = require('assert');
 const RepoUser = require('../src/repository/User');
 
@@ -17,7 +17,7 @@ describe('Utilisateurs', () => {
     });
 
     it(`Vérification email, d'un non existant`, (done) => {
-        repo.emailExists(entity.email).then((result) => {
+        repo.emailExists('j2.doe@yopmail.com').then((result) => {
             assert.equal(result, false);
             done();
         });
@@ -25,7 +25,8 @@ describe('Utilisateurs', () => {
  
     it(`Création d'un compte`, (done) => {
         repo.emailExists(entity.email).then((result) => {
-            if(true) {
+            // On crée l'utilisateur que si il n'est pas déjà présent
+            if(result == false) {
                 repo.add(entity).then((result) => {
                     assert.equal(result.email, entity.email);
                     assert.equal(result.civility, entity.civility);
