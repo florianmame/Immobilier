@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const JwtService = require('./src/services/jwtService.js');
 require('dotenv').config()
 
 
@@ -24,19 +25,10 @@ app.use(session({
 //--------------------------------------------------------------------
 const flash = require('express-flash-messages');
 app.use(flash());
-if(process.env.APP_ENV === 'dev') {
-    app.use((req,res,next) => {
-        req.session.user = {
-            email:"mogangoflorian@gmail.com",
-            civility: '1',
-            firstname: 'florian',
-            lastname: 'mogango',
-            roles: 'ADMIN',
-            phone: '0628603174'
-        };
-        next();
-    });
-};
+
+// Récupérer la session grace au JWT
+app.use('/', (new JwtService).connectWithJwt);
+app.use('/admin', (new JwtService).connectAuthAdmin);
 
 //--------------------------------------------------------------------
 //      Envoie de variable(s) à PUG

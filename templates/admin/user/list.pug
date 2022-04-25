@@ -1,0 +1,52 @@
+extends ../layout.pug
+block breadcrumb  
+    li
+        a(href='#')
+            em.fa.fa-home &nbsp;
+    li(class='active') Liste des Utilisateurs 
+        
+block content
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+        h1.h2 Liste des Utilisateurs 
+        .btn-toolbar.mb-2.mb-md-0
+            a.btn.btn-small.btn-primary(href="/admin/user/add") Ajouter un utilisateur 
+
+    .row
+        .col-md-12
+            .panel.panel-container
+                table.table.table-hover
+                    thead 
+                        tr 
+                            th.bs-checkbox 
+                                input(name="btSelectAll" type="checkbox")
+                            th Nom  
+                            th Email 
+                            th Téléphone   
+                            th(style="width:1%;")  
+                            th(style="width:1%;")  
+                    tbody 
+                        each user , key in users  
+                            tr 
+                                td.bs-checkbox 
+                                    input(data-index=user._id value=user._id name="user[]" type="checkbox")
+                                td  
+                                    .dropdown
+                                        a.dropdown-toggle(href="#" role="button" id='dropdown_'+key data-bs-toggle="dropdown" aria-expanded="false") #{user.firstname} #{user.lastname}
+                                        .dropdown-menu(aria-labelledby='dropdown_'+key)
+                                            h6.dropdown-header Contacter
+                                            a.dropdown-item(href="mailto:"+user.email) Envoyer un mail
+                                            if user.phone != ''
+                                                a.dropdown-item(href="tel:"+user.phone) Appeler au #{user.phone}
+                                
+                                td
+                                    | #{user.email}
+                                    
+                                td
+                                    | #{user.phone}
+
+                                td
+                                    a.btn.btn-primary(href='/admin/user/edit/'+user._id) 
+                                        i.fa.fa-pen
+                                td
+                                    a.btn.btn-danger(href='/admin/user/delete/'+user._id) 
+                                        i.fa.fa-trash

@@ -1,3 +1,5 @@
+const User = require('../src/repository/User.js');
+
 module.exports = (app) => {
     //route Home
     app.get('/', (req, res) => {
@@ -44,39 +46,14 @@ module.exports = (app) => {
 //          routes administration
 //-------------------------------------------------------------------
 
-    // Vérifier l'acces à l'admin avec le JWT
-    app.use('/admin', (req, res, next) => {
-        const jwt = require('jsonwebtoken');
-        const Cookies = require( "cookies" );
- 
-        // Récupération du token dans le cookie
-        let token = new Cookies(req,res).get('access_token');
-        
-        // Si le cookie (access_token) n'existe pas
-        if (token == null) return res.sendStatus(401);
-     
-        // sinon on vérifie le jwt
-        jwt.verify(token, process.env.APP_KEY, (err, dataJwt) => { 
-            // Erreur du JWT (n'est pas un JWT, a été modifié, est expiré)
-            if(err) return res.sendStatus(403);
-            
-            // A partir de là le JWT est valide on a plus qu'à vérifier les droits
-            // Si on est admin
-            if(typeof dataJwt.roles != 'undefined' && dataJwt.roles.includes('ADMIN')) {
-                req.session.user = dataJwt.user;
-                next();
-            } 
-            else {
-                req.flash('error', 'Vous n\'avez pas les droits pour accéder à cette page.');
-                res.redirect('/');
-            }
-        });
-    });
     
     app.get('/admin', (req, res) => {
         let Dashboard = require('../src/controllers/Dashboard.js');
         (new Dashboard()).print(req, res);
     });
+
+
+        //-------- Realty ----------//
 
     app.get('/admin/realty', (req, res) => {
         let Realty = require('../src/controllers/Realty.js');
@@ -112,6 +89,38 @@ module.exports = (app) => {
     app.get('/admin/realty/delete/:id', (req, res) => {
         let Realty = require('../src/controllers/Realty.js');
         (new Realty()).delete(req, res);
+    });
+
+
+     //-------- User ----------//
+     app.get('/admin/User', (req, res) => {
+        let User = require('../src/controllers/User.js');
+        (new User()).print(req, res);
+    });
+ 
+    app.get('/admin/user/add', (req, res) => {
+        let User = require('../src/controllers/User.js');
+        (new User()).printForm(req, res);
+    });
+
+    app.post('/admin/user/add', (req, res) => {
+            let User = require('../src/controllers/User.js');
+            (new User()).processForm(req, res);
+    });
+
+    app.get('/admin/user/edit/:id', (req, res) => {
+            let User = require('../src/controllers/User.js');
+            (new User()).printForm(req, res);
+    });
+
+    app.post('/admin/user/edit/:id', (req, res) => {
+        let User = require('../src/controllers/User.js');
+        (new User()).processForm(req, res);
+    });
+
+    app.get('/admin/user/delete/:id', (req, res) => {
+        let User = require('../src/controllers/User.js');
+        (new User()).delete(req, res);
     });
 
 };

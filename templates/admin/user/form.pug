@@ -1,0 +1,55 @@
+extends ../layout.pug
+
+block breadcrumb  
+    li
+        a(href='#')
+            em.fa.fa-home &nbsp;
+    li Utilisateur 
+    li &nbsp; / &nbsp;
+    li(class='active') Modification Utilisateur
+
+block content
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+        h1.h2 Enregistrer un utilisateur 
+        .btn-toolbar.mb-2.mb-md-0
+            a.btn.btn-small.btn-secondary(href="/admin/user") Liste des utilisateurs 
+    .row   
+        form(role="form" method="post")
+            .input-group.mb-3
+                .input-group-prepend
+                    .input-group-text.d-none.d-lg-block 
+                        i.fa.fa-envelope
+                input.form-control(name="user[email]" value= form.email  type="string" placeholder="Email")   
+    
+            hr
+    
+            .input-group.mb-3
+                .input-group-prepend
+                    .input-group-text.d-none.d-lg-block 
+                        i.fa.fa-restroom
+                select(class="form-control" placeholder="Civilité" name="civility")
+                    option(value="1") Monsieur
+                    option(value="2") Madame
+            
+            .input-group.mb-3
+                .input-group-prepend
+                    .input-group-text.d-none.d-lg-block
+                        i.fa.fa-user
+                input.form-control(name="user[lastname]" value= form.lastname  type="text" placeholder="Nom")
+    
+            .input-group.mb-3
+                .input-group-prepend
+                    .input-group-text.d-none.d-lg-block 
+                        i.fa.fa-user
+                input.form-control(name="user[firstname]" value= form.firstname  type="text" placeholder="Prénom")
+    
+            .input-group.mb-3
+                .input-group-prepend
+                    .input-group-text.d-none.d-lg-block
+                        i.fa.fa-phone
+                input.form-control(name="user[phone]" value= form.phone  type="number" placeholder="Phone") 
+    
+            .row.justify-content-center
+                .col-lg-12
+                    button.btn.btn-primary.center-block(type="submit")= (route.indexOf('/admin/user/edit') != -1  ? 'Modifier' : 'Enregistrer' ) 
+

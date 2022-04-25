@@ -32,6 +32,7 @@ module.exports = class Authenticated {
     }
     disconnect(request, response) {
         request.session.user = null;
+        new Cookies(request, response).set('access_token', null, {expires: 0, httpOnly: true, secure: false });
         request.flash('notify', 'Vous êtes maintenant déconnecté.');
         response.redirect('/');
     }
